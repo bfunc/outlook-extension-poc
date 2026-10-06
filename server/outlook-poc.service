@@ -1,0 +1,24 @@
+[Unit]
+Description=Outlook add-in PoC test service
+After=network.target
+
+[Service]
+User=outlook-poc
+Group=outlook-poc
+WorkingDirectory=/opt/outlook-poc
+ExecStart=/usr/bin/node /opt/outlook-poc/server.js
+Environment=PORT=8790
+Environment=DATA_FILE=/var/lib/outlook-poc/submissions.jsonl
+# Host-specific settings (ALLOWED_ORIGINS=https://addin.example.com,...), see server/.env.example.
+EnvironmentFile=-/etc/outlook-poc/env
+StateDirectory=outlook-poc
+Restart=always
+RestartSec=3
+MemoryMax=64M
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

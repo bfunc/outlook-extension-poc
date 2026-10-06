@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Outlook Extension PoC: compose-mode task pane + OnMessageSend (Smart Alerts) handler.
+     Template: `npm run build` fills the ${...} values from .env and writes dist/manifest.xml. -->
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+           xsi:type="MailApp">
+  <Id>${ADDIN_ID}</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>${ADDIN_PROVIDER}</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Outlook Extension PoC"/>
+  <Description DefaultValue="Insert items into the message, add recipients from a list and post the message to a test endpoint on send."/>
+  <IconUrl DefaultValue="${ADDIN_BASE_URL}/assets/icon-64.png"/>
+  <HighResolutionIconUrl DefaultValue="${ADDIN_BASE_URL}/assets/icon-128.png"/>
+  <SupportUrl DefaultValue="${ADDIN_SUPPORT_URL}"/>
+  <AppDomains>
+    <AppDomain>${ADDIN_ORIGIN}</AppDomain>
+  </AppDomains>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemEdit">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="${ADDIN_BASE_URL}/index.html"/>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+      <Requirements>
+        <bt:Sets DefaultMinVersion="1.12">
+          <bt:Set Name="Mailbox"/>
+        </bt:Sets>
+      </Requirements>
+      <Hosts>
+        <Host xsi:type="MailHost">
+          <Runtimes>
+            <!-- HTML page for web / new Outlook; the JS file for classic Outlook's JavaScript-only runtime. -->
+            <Runtime resid="WebViewRuntime.Url">
+              <Override type="javascript" resid="JSRuntime.Url"/>
+            </Runtime>
+          </Runtimes>
+          <DesktopFormFactor>
+            <FunctionFile resid="Commands.Url"/>
+            <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="pocComposeGroup">
+                  <Label resid="GroupLabel"/>
+                  <Control xsi:type="Button" id="pocOpenPaneButton">
+                    <Label resid="TaskpaneButton.Label"/>
+                    <Supertip>
+                      <Title resid="TaskpaneButton.Label"/>
+                      <Description resid="TaskpaneButton.Tooltip"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="Icon.16x16"/>
+                      <bt:Image size="32" resid="Icon.32x32"/>
+                      <bt:Image size="80" resid="Icon.80x80"/>
+                    </Icon>
+                    <Action xsi:type="ShowTaskpane">
+                      <SourceLocation resid="Taskpane.Url"/>
+                      <SupportsPinning>true</SupportsPinning>
+                    </Action>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+            <ExtensionPoint xsi:type="LaunchEvent">
+              <LaunchEvents>
+                <LaunchEvent Type="OnMessageSend" FunctionName="onMessageSendHandler" SendMode="SoftBlock"/>
+              </LaunchEvents>
+              <SourceLocation resid="WebViewRuntime.Url"/>
+            </ExtensionPoint>
+          </DesktopFormFactor>
+        </Host>
+      </Hosts>
+      <Resources>
+        <bt:Images>
+          <bt:Image id="Icon.16x16" DefaultValue="${ADDIN_BASE_URL}/assets/icon-16.png"/>
+          <bt:Image id="Icon.32x32" DefaultValue="${ADDIN_BASE_URL}/assets/icon-32.png"/>
+          <bt:Image id="Icon.80x80" DefaultValue="${ADDIN_BASE_URL}/assets/icon-80.png"/>
+        </bt:Images>
+        <bt:Urls>
+          <bt:Url id="Commands.Url" DefaultValue="${ADDIN_BASE_URL}/commands.html"/>
+          <bt:Url id="Taskpane.Url" DefaultValue="${ADDIN_BASE_URL}/index.html"/>
+          <bt:Url id="WebViewRuntime.Url" DefaultValue="${ADDIN_BASE_URL}/commands.html"/>
+          <bt:Url id="JSRuntime.Url" DefaultValue="${ADDIN_BASE_URL}/launchevent.js"/>
+        </bt:Urls>
+        <bt:ShortStrings>
+          <bt:String id="GroupLabel" DefaultValue="Extension PoC"/>
+          <bt:String id="TaskpaneButton.Label" DefaultValue="Extension PoC"/>
+        </bt:ShortStrings>
+        <bt:LongStrings>
+          <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Open the Outlook Extension PoC side panel."/>
+        </bt:LongStrings>
+      </Resources>
+    </VersionOverrides>
+  </VersionOverrides>
+</OfficeApp>
