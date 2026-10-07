@@ -55,7 +55,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-
 .leg + .menu .menu-btn, .leg ~ .menu .menu-btn { background: transparent; color: var(--accent); }
 .menu .plus { font-size: 20px; line-height: 1; }
 .menu .chev { font-size: 12px; }
-.menu-list { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 10; list-style: none; margin: 0; padding: 6px 0; background: #ededf0; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18); max-height: 320px; overflow: auto; }
+.menu-list { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 10; list-style: none; margin: 0; padding: 6px 0; background: #ededf0; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18); }
 .menu-list button { width: 100%; text-align: left; padding: 9px 16px; border: 0; background: transparent; color: inherit; font: inherit; font-size: 16px; cursor: pointer; }
 .menu-list button:hover { background: #dcdde2; }
 
