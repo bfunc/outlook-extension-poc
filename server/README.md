@@ -10,9 +10,18 @@ submissions back publicly, since they contain email content.
 - `GET /api/outlook-poc/health` — `{ ok: true }`
 - `GET /api/outlook-poc/items` — 6 sample items `{ id, title, html }`
 - `GET /api/outlook-poc/emails` — 6 sample addresses `{ name, email }` (all `@example.com`)
-- `POST /api/outlook-poc/submit` — body `{ itemIds: string[], email: string, recipients: string[] }`
+- `POST /api/outlook-poc/submit` — body `{ itemIds: string[], email: string, recipients: string[], ideaId?: string }`
   - 400 if shapes don't match, 413 if body > 1 MB
-  - 200 `{ ok: true, id, receivedAt }` on success
+  - 200 `{ ok: true, id, receivedAt }` on success; with a known `ideaId` the draft is marked `sent`
+
+Drafts (in memory, at most 500, oldest dropped; used by the clickable prototype to link a mail to a backend record through its `x-idea-id` header):
+
+- `POST /api/outlook-poc/drafts` — 201 `{ ok: true, draft }`, a new draft `{ id, status: "draft", itemIds: [], recipients: [], subject: "", items: [], createdAt, updatedAt }`
+- `GET /api/outlook-poc/drafts` — list `{ id, status, itemIds, recipientCount, subject, createdAt, updatedAt }`
+- `GET /api/outlook-poc/drafts/:id` — one draft with its `items` resolved; 404 if unknown
+- `PUT /api/outlook-poc/drafts/:id` — body with any of `itemIds: string[]`, `recipients: string[]`, `subject: string`, `status: "sent"`; returns the draft
+
+The draft endpoints return recipients and subjects, so they are meant for the prototype and test data only.
 
 CORS allows the origins in `ALLOWED_ORIGINS` (comma-separated env variable: the add-in's own host),
 `https://outlook.live.com`, `https://outlook.office.com`,

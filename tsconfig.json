@@ -10,5 +10,5 @@
     "skipLibCheck": true,
     "types": ["office-js"]
   },
-  "include": ["src"]
+  "include": ["src", "prototype"]
 }

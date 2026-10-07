@@ -32,6 +32,9 @@ export default defineConfig(({ mode }) => {
   return {
     base: new URL(env.ADDIN_BASE_URL).pathname.replace(/\/?$/, "/"),
     plugins: [react(), addinFiles(env)],
-    build: { target: "es2020" },
+    build: {
+      target: "es2020",
+      rollupOptions: { input: { main: resolve("index.html"), prototype: resolve("prototype/index.html") } },
+    },
   };
 });
