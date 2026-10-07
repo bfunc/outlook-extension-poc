@@ -40,9 +40,10 @@ Run it locally:
 
 ```bash
 cp .env.example .env         # ADDIN_BASE_URL=http://localhost:5173/outlook-addin, VITE_API_BASE=http://localhost:8799/api/outlook-poc
-ALLOWED_ORIGINS=http://localhost:5173 PORT=8799 node server/server.js
-npm run dev                  # then open http://localhost:5173/outlook-addin/prototype/index.html
+npm run prototype            # starts the endpoint on 8799 and Vite on 5173, opens the prototype in the browser
 ```
+
+Or by hand: `ALLOWED_ORIGINS=http://localhost:5173 PORT=8799 node server/server.js`, then `npm run dev` and open http://localhost:5173/outlook-addin/prototype/index.html.
 
 `npm run build` also emits the prototype at `dist/prototype/index.html`. `server/package.json` marks the server folder as CommonJS so `node server/server.js` runs inside this ESM package.
 
