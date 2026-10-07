@@ -23,29 +23,41 @@ A proof of concept for an Outlook add-in (Office.js, React + Vite + TypeScript) 
 | `public/launchevent.js` | The `OnMessageSend` handler. Plain JS without imports, because classic Outlook on Windows runs it in a JavaScript-only runtime. |
 | `public/commands.html` | Loads Office.js and the handler for Outlook on the web and new Outlook. |
 | `server/` | The test endpoint: a dependency-free Node service (`GET items`, `GET emails`, `POST submit`, and the `drafts` endpoints used by the prototype), with its systemd unit and nginx snippet. See `server/README.md`. |
-| `prototype/` | A clickable prototype: a web page that looks like Outlook on the web and runs the real panel inside it, without Outlook. See below. |
+| `prototype/` | A clickable prototype: a web page that looks like Outlook on the web and runs the real panel inside it, without Outlook or a server. See below. |
+| `src/be-mock/` | The test endpoint mocked in the browser (`index.js`) and the sample data (`samples.json`) used by the prototype. |
 
 State between the panel and the send handler is kept in `item.sessionData` and, so that a reopened draft keeps it, in the item's custom properties.
 
 ## Clickable prototype
 
-`prototype/` is a standalone page that imitates Outlook on the web (folder pane, message list, reading pane, compose, the add-in pane) and is filled with fictitious bank/trading sample data (lorem ipsum, `example.com` addresses). It exists to click through the idea without installing the add-in.
-
-- The real panel (`src/App.tsx`, `src/office.ts`) runs unchanged. `prototype/fakeOffice.ts` stands in for Office.js and reads and writes the message held in `prototype/mailStore.ts` (in memory, reset on reload).
-- **New mail** creates a draft on the test endpoint (`POST /drafts`) and stores its id in the message as the `x-idea-id` header. While the draft is edited, the selected items, recipients and subject are mirrored to the endpoint (`PUT /drafts/:id`).
-- **Send** (Outlook's button or the panel's) does what `launchevent.js` does in Outlook: posts the JSON with the `ideaId`, appends the subject suffix, and the endpoint marks the draft as sent. The message moves to Sent Items and a copy is delivered to the Inbox so it can be opened as a recipient.
-- Opening a received message that carries `x-idea-id` and pressing **Outlook Extension PoC** shows the read-mode pane (`prototype/ReadPanel.tsx`), which resolves the items from `GET /drafts/:id`. "View message headers" shows the header.
-
-Run it locally:
+`prototype/` is a standalone page that imitates Outlook on the web (folder pane, message list, reading pane, compose, the add-in pane). It runs entirely in the browser: the real panel on a fake Office.js, and the test endpoint mocked in memory. Nothing to install, no server.
 
 ```bash
-cp .env.example .env         # ADDIN_BASE_URL=http://localhost:5173/outlook-addin, VITE_API_BASE=http://localhost:8799/api/outlook-poc
-npm run prototype            # starts the endpoint on 8799 and Vite on 5173, opens the prototype in the browser
+cp .env.example .env         # the values only need to be present; the prototype never calls the hosts
+npm install
+npm run prototype            # opens http://localhost:5173/outlook-addin/prototype/index.html
 ```
 
-Or by hand: `ALLOWED_ORIGINS=http://localhost:5173 PORT=8799 node server/server.js`, then `npm run dev` and open http://localhost:5173/outlook-addin/prototype/index.html.
+What it does:
 
-`npm run build` also emits the prototype at `dist/prototype/index.html`. `server/package.json` marks the server folder as CommonJS so `node server/server.js` runs inside this ESM package.
+- **New mail** creates a draft on the (mocked) endpoint, `POST /drafts`, and stores its id in the message as the `x-idea-id` header. While the draft is edited, the selected items, recipients and subject are mirrored to it (`PUT /drafts/:id`).
+- **Send** (Outlook's button or the panel's) does what `launchevent.js` does in Outlook: posts the JSON with the `ideaId`, appends the subject suffix, and the endpoint marks the draft as sent. The message moves to Sent Items and a copy is delivered to the Inbox so it can be opened as a recipient.
+- Opening a received message that carries `x-idea-id` and pressing **Outlook Extension PoC** shows the read-mode pane, which resolves the items from `GET /drafts/:id`. "View message headers" shows the header.
+- **Backend (mock)** in the top bar opens an inspector with the drafts, the submissions and the request log, and a Reset.
+
+Where things are:
+
+| Path | What |
+|---|---|
+| `src/be-mock/samples.json` | All sample data, edit by hand: `me`, `contacts` (the panel's list of emails and the inbox senders), `items`, `inbox` (initial messages; `daysAgo` + `time` keep them recent, `body` is a list of HTML paragraphs). Everything is fictitious. |
+| `src/be-mock/index.js` | The endpoint mock, plain JS: entities (`Draft`, `Submission`), the in-memory `db`, one function per operation, a `route()` table with the same routes and JSON shapes as `server/server.js`, and `installMockBackend()` which answers `fetch` calls to the API base. |
+| `prototype/mailStore.ts` | The in-memory mailbox (folders, messages, headers, custom properties), seeded from `samples.json`. |
+| `prototype/fakeOffice.ts` | Office.js stand-in: `item.body`, `subject`, `to/cc/bcc`, `sessionData`, custom properties, `sendAsync`. |
+| `prototype/Shell.tsx`, `shell.css` | The Outlook look, compose and read views, the add-in pane host, the send flow. |
+| `prototype/ReadPanel.tsx` | The pane in read mode. |
+| `prototype/BackendInspector.tsx` | The mock backend inspector. |
+
+The real service in `server/` has the same `drafts` routes, so the prototype can be pointed at it later by not calling `installMockBackend` in `prototype/main.tsx`. `npm run build` also emits the prototype at `dist/prototype/index.html`.
 
 ## Build and host
 

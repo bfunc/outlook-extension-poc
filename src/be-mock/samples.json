@@ -1,0 +1,214 @@
+{
+  "//": "Fictitious sample data for the Outlook Extension PoC prototype. Edit by hand. Everything is invented: lorem ipsum text, example.com addresses.",
+  "me": {
+    "name": "Lorem Ipsum (you, fictitious)",
+    "email": "lorem.ipsum@example.com"
+  },
+  "contacts": [
+    {
+      "name": "Dolor Sit (FX desk, fictitious)",
+      "email": "fx.desk@example.com"
+    },
+    {
+      "name": "Amet Consectetur (Settlements, fictitious)",
+      "email": "settlements@example.com"
+    },
+    {
+      "name": "Adipiscing Elit (Compliance, fictitious)",
+      "email": "compliance@example.com"
+    },
+    {
+      "name": "Nostrud Exercitation (Client Onboarding, fictitious)",
+      "email": "onboarding@example.com"
+    },
+    {
+      "name": "Tempor Incididunt (Research, fictitious)",
+      "email": "research@example.com"
+    },
+    {
+      "name": "Veniam Quis (Market Risk, fictitious)",
+      "email": "market.risk@example.com"
+    },
+    {
+      "name": "Magna Aliqua (Lorem Holdings, fictitious)",
+      "email": "treasury@lorem-holdings.example.com"
+    }
+  ],
+  "items": [
+    {
+      "id": "itm-001",
+      "title": "FX price indication EUR/USD (fictitious)",
+      "html": "<p>Lorem ipsum indicative spot <strong>1.0842 / 1.0845</strong>, valid for lorem minutes. Dolor sit amet, consectetur adipiscing elit.</p>"
+    },
+    {
+      "id": "itm-002",
+      "title": "Term sheet summary: 3Y EUR note (fictitious)",
+      "html": "<p>Notional lorem 10m, coupon <strong>ipsum 3.10%</strong> p.a., maturity dolor 2029. Sed do eiusmod tempor incididunt. Full term sheet: <a href=\"https://example.com/term-sheet\">example.com/term-sheet</a>.</p>"
+    },
+    {
+      "id": "itm-003",
+      "title": "Research snippet: rates outlook (fictitious)",
+      "html": "<p>Lorem ipsum: we expect the curve to <strong>consectetur</strong> in Q3, driven by adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation.</p>"
+    },
+    {
+      "id": "itm-004",
+      "title": "Trade confirmation summary #LRM-4821 (fictitious)",
+      "html": "<p>Buy lorem 5,000 ipsum shares at dolor 42.10, settlement T+2. <strong>Status: ipsum confirmed</strong>. Duis aute irure dolor in reprehenderit.</p>"
+    },
+    {
+      "id": "itm-005",
+      "title": "Settlement reminder (fictitious)",
+      "html": "<p>Lorem ipsum settlement for trade #LRM-4790 is due in <strong>2 business days</strong>. Please dolor sit amet the instructions at <a href=\"https://example.com/settlement\">example.com/settlement</a>.</p>"
+    },
+    {
+      "id": "itm-006",
+      "title": "KYC refresh notice (fictitious)",
+      "html": "<p>Lorem ipsum KYC documents for Lorem Holdings expire on dolor 30. <strong>Action: sit amet</strong> before the review date. Excepteur sint occaecat cupidatat non proident.</p>"
+    }
+  ],
+  "inbox": [
+    {
+      "from": "treasury@lorem-holdings.example.com",
+      "subject": "RE: FX hedge for Q3 receivables (fictitious)",
+      "daysAgo": 0,
+      "time": "09:12",
+      "unread": true,
+      "body": [
+        "Dear Lorem,",
+        "Thank you for the indication. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Could you send the <strong>EUR/USD forward</strong> levels for ipsum 3 and 6 months?",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Kind regards,<br/>Magna Aliqua<br/>Treasury, Lorem Holdings (fictitious)"
+      ]
+    },
+    {
+      "from": "settlements@example.com",
+      "subject": "Settlement query: trade #LRM-4790 (fictitious)",
+      "daysAgo": 0,
+      "time": "08:41",
+      "unread": true,
+      "body": [
+        "Hi,",
+        "Lorem ipsum settlement instructions for trade <strong>#LRM-4790</strong> are missing the dolor sit amet. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Please confirm by ipsum 16:00.",
+        "Settlements (fictitious)"
+      ]
+    },
+    {
+      "from": "market.risk@example.com",
+      "subject": "Margin call notice: Lorem Holdings (fictitious)",
+      "daysAgo": 0,
+      "time": "07:55",
+      "unread": true,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The margin requirement for <strong>Lorem Holdings</strong> increased by ipsum 1.2m overnight.",
+        "Action required by dolor 12:00. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Market Risk (fictitious)"
+      ]
+    },
+    {
+      "from": "research@example.com",
+      "subject": "Morning note: rates and FX outlook (fictitious)",
+      "daysAgo": 0,
+      "time": "06:30",
+      "unread": false,
+      "body": [
+        "<strong>Rates:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "<strong>FX:</strong> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "<strong>Equities:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "Research (fictitious). Not investment advice; this is sample text."
+      ]
+    },
+    {
+      "from": "compliance@example.com",
+      "subject": "KYC refresh due: Lorem Holdings (fictitious)",
+      "daysAgo": 1,
+      "time": "16:05",
+      "unread": false,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The KYC file for <strong>Lorem Holdings</strong> expires on dolor 30.",
+        "Please collect the ipsum documents listed at <a href=\"https://example.com/kyc\">example.com/kyc</a>. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Compliance (fictitious)"
+      ]
+    },
+    {
+      "from": "fx.desk@example.com",
+      "subject": "Price indication EUR/USD 3M forward (fictitious)",
+      "daysAgo": 1,
+      "time": "14:20",
+      "unread": false,
+      "body": [
+        "Indicative: <strong>1.0901 / 1.0905</strong>, lorem ipsum valid 15 minutes. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "FX desk (fictitious)"
+      ]
+    },
+    {
+      "from": "onboarding@example.com",
+      "subject": "New client onboarding: Ipsum Capital (fictitious)",
+      "daysAgo": 1,
+      "time": "11:48",
+      "unread": false,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Onboarding of <strong>Ipsum Capital</strong> is at step 3 of 5.",
+        "Outstanding: dolor sit amet form, consectetur signature. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Client Onboarding (fictitious)"
+      ]
+    },
+    {
+      "from": "settlements@example.com",
+      "subject": "Trade confirmation #LRM-4821 (fictitious)",
+      "daysAgo": 2,
+      "time": "17:02",
+      "unread": false,
+      "body": [
+        "Confirmed: buy lorem 5,000 ipsum shares at dolor 42.10, settlement T+2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Settlements (fictitious)"
+      ]
+    },
+    {
+      "from": "treasury@lorem-holdings.example.com",
+      "subject": "Meeting request: portfolio review (fictitious)",
+      "daysAgo": 2,
+      "time": "10:15",
+      "unread": false,
+      "body": [
+        "Dear Lorem,",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Would ipsum Thursday 10:00 suit for the quarterly review? Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Magna Aliqua (fictitious)"
+      ]
+    },
+    {
+      "from": "market.risk@example.com",
+      "subject": "Limit utilisation report, weekly (fictitious)",
+      "daysAgo": 3,
+      "time": "09:00",
+      "unread": false,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Utilisation is at <strong>ipsum 68%</strong> of the dolor limit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Market Risk (fictitious)"
+      ]
+    },
+    {
+      "from": "research@example.com",
+      "subject": "Sector update: lorem ipsum banks (fictitious)",
+      "daysAgo": 4,
+      "time": "08:10",
+      "unread": false,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "Research (fictitious). Sample text only."
+      ]
+    },
+    {
+      "from": "compliance@example.com",
+      "subject": "Reminder: annual attestation (fictitious)",
+      "daysAgo": 5,
+      "time": "15:40",
+      "unread": false,
+      "body": [
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Please complete the ipsum attestation by dolor 15.",
+        "Compliance (fictitious)"
+      ]
+    }
+  ]
+}

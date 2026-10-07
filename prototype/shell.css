@@ -11,7 +11,9 @@ body { margin: 0; font: 14px/1.4 "Segoe UI", "Segoe UI Web (West European)", sys
 .ol-waffle { font-size: 14px; letter-spacing: -2px; opacity: 0.9; width: 24px; }
 .ol-brand { font-weight: 600; font-size: 16px; }
 .ol-search { flex: 0 1 480px; margin-left: 120px; height: 32px; border: 0; border-radius: 4px; padding: 0 12px; background: #fff; font: inherit; }
-.ol-avatar { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; background: #e3008c; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; }
+.ol-top-btn { margin-left: auto; height: 32px; padding: 0 12px; border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 4px; background: transparent; color: #fff; cursor: pointer; font-size: 13px; }
+.ol-top-btn:hover, .ol-top-btn.active { background: rgba(255, 255, 255, 0.15); }
+.ol-avatar { margin-left: 0; width: 32px; height: 32px; border-radius: 50%; background: #e3008c; color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 600; }
 
 .ol-body { flex: 1; display: flex; min-height: 0; background: #fff; }
 
@@ -89,3 +91,15 @@ body { margin: 0; font: 14px/1.4 "Segoe UI", "Segoe UI Web (West European)", sys
 .ol-toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #242424; color: #fff; padding: 10px 16px; border-radius: 4px; font-size: 13px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); max-width: 80vw; }
 
 code { font-family: Consolas, "Cascadia Mono", monospace; font-size: 12px; }
+
+.ol-inspector { border-top: 2px solid #0f6cbd; background: #fafafa; max-height: 40vh; display: flex; flex-direction: column; font-size: 12px; }
+.ol-inspector-head { display: flex; align-items: center; gap: 12px; padding: 6px 12px; font-weight: 600; border-bottom: 1px solid #e0e0e0; }
+.ol-inspector-head button { border: 0; background: transparent; cursor: pointer; font-size: 16px; line-height: 1; }
+.ol-inspector-head .ol-link { font-size: 12px; }
+.ol-inspector-cols { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; padding: 8px 12px; overflow: auto; }
+.ol-inspector h3 { font-size: 12px; margin: 8px 0 4px; }
+.ol-inspector table { border-collapse: collapse; width: 100%; }
+.ol-inspector th, .ol-inspector td { text-align: left; padding: 3px 8px 3px 0; border-bottom: 1px solid #eee; vertical-align: top; }
+.ol-inspector th { color: #616161; font-weight: 600; }
+.ol-inspector pre { margin: 0; white-space: pre-wrap; }
+.ol-inspector .ol-empty { padding: 0; margin: 0 0 6px; }

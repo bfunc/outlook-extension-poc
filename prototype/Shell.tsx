@@ -4,6 +4,7 @@ import { API, appendSubject, buildPayload, submit } from "../src/office";
 import { composingMessageId, onPaneSend, setComposingMessage } from "./fakeOffice";
 import { ME, mailStore, type Address, type Folder, type Message } from "./mailStore";
 import { ReadPanel } from "./ReadPanel";
+import { BackendInspector } from "./BackendInspector";
 
 const IDEA_HEADER = "x-idea-id";
 
@@ -75,6 +76,7 @@ export function Shell() {
   const [view, setView] = useState<View>({ kind: "none" });
   const [paneOpen, setPaneOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [inspector, setInspector] = useState(false);
 
   const list = mailStore.byFolder(folder);
   const current = view.kind === "none" ? undefined : mailStore.get(view.id);
@@ -176,6 +178,7 @@ export function Shell() {
         <div className="ol-waffle" aria-hidden="true">⋮⋮⋮</div>
         <div className="ol-brand">Outlook</div>
         <input className="ol-search" placeholder="Search" readOnly />
+        <button className={`ol-top-btn${inspector ? " active" : ""}`} onClick={() => setInspector((v) => !v)}>Backend (mock)</button>
         <div className="ol-avatar" title={ME.email}>{initials(ME)}</div>
       </header>
       <div className="ol-body">
@@ -259,6 +262,7 @@ export function Shell() {
           </aside>
         )}
       </div>
+      {inspector && <BackendInspector onClose={() => setInspector(false)} />}
       {toast && <div className="ol-toast" role="status">{toast}</div>}
     </div>
   );

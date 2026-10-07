@@ -8,6 +8,8 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "types": ["office-js"]
   },
   "include": ["src", "prototype"]

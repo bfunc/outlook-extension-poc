@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "prototype": "node prototype/run.cjs",
+    "prototype": "vite --open /outlook-addin/prototype/index.html",
     "build": "tsc && vite build",
     "validate": "npx --yes office-addin-manifest validate dist/manifest.xml"
   },
