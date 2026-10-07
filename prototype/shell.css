@@ -20,8 +20,8 @@ body { margin: 0; font: 14px/1.4 "Segoe UI", "Segoe UI Web (West European)", sys
 .ol-rail button.active { color: #0f6cbd; background: #fff; box-shadow: inset 3px 0 0 #0f6cbd; }
 
 .ol-folders { width: 220px; border-right: 1px solid #e0e0e0; padding: 12px 8px; background: #fafafa; }
-.ol-new { width: 100%; height: 36px; border: 0; border-radius: 4px; background: #0f6cbd; color: #fff; font-weight: 600; cursor: pointer; }
-.ol-new:hover { background: #115ea3; }
+.ol .ol-new { width: 100%; height: 36px; border: 0; border-radius: 4px; background: #0f6cbd; color: #fff; font-weight: 600; cursor: pointer; }
+.ol .ol-new:hover { background: #115ea3; }
 .ol-account { margin: 16px 8px 6px; font-size: 12px; font-weight: 600; color: #616161; overflow-wrap: anywhere; }
 .ol-folders ul { list-style: none; margin: 0; padding: 0; }
 .ol-folders li button { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border: 0; background: transparent; border-radius: 4px; text-align: left; cursor: pointer; }
