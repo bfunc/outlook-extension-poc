@@ -178,7 +178,6 @@ export function Shell() {
         <div className="ol-waffle" aria-hidden="true">⋮⋮⋮</div>
         <div className="ol-brand">Outlook</div>
         <input className="ol-search" placeholder="Search" readOnly />
-        <button className={`ol-top-btn${inspector ? " active" : ""}`} onClick={() => setInspector((v) => !v)}>Backend (mock)</button>
         <div className="ol-avatar" title={ME.email}>{initials(ME)}</div>
       </header>
       <div className="ol-body">
@@ -187,6 +186,7 @@ export function Shell() {
           <button title="Calendar">▦</button>
           <button title="People">☺</button>
           <button title="Apps">⊞</button>
+          <button className={`ol-rail-cog${inspector ? " active" : ""}`} title="Backend (mock) console" aria-label="Toggle backend console" onClick={() => setInspector((v) => !v)}>⚙</button>
         </nav>
         <aside className="ol-folders">
           <button className="ol-new" onClick={newMail}>+ New mail</button>
