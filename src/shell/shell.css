@@ -54,7 +54,9 @@ body { margin: 0; font: 14px/1.4 "Segoe UI", "Segoe UI Web (West European)", sys
 .ol-cmd:hover { background: #f0f0f0; }
 .ol-cmd.primary { background: #0f6cbd; color: #fff; font-weight: 600; }
 .ol-cmd.primary:hover { background: #115ea3; }
-.ol-cmd-addin.active { background: #e8f0fb; color: #0f6cbd; }
+.ol-cmd-addin { background: #e8f0fb; color: #0f6cbd; }
+.ol-cmd-addin:hover { background: #d9e7f8; }
+.ol-cmd-addin.active { background: #c7dcf5; }
 .ol-cmd-icon { font-size: 15px; }
 .ol-cmd-spacer { flex: 1; }
 
