@@ -1,16 +1,13 @@
 {
-  "name": "outlook-recipients",
+  "name": "outlook-clickable-prototype",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite",
-    "prototype": "vite --open /outlook-addin/prototype/index.html",
+    "dev": "vite --open",
     "build": "tsc && vite build",
-    "validate": "npx --yes office-addin-manifest validate dist/manifest.xml"
+    "preview": "vite preview --open"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "UNLICENSED",
+  "description": "Clickable prototype of an Outlook add-in: Outlook-on-the-web look, the task pane on a fake Office.js, the endpoint mocked in the browser.",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -19,9 +16,9 @@
     "@types/office-js": "^1.0.611",
     "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^6.1.2",
     "typescript": "^5.9.3",
-    "vite": "^5.4.21"
+    "vite": "^8.3.3"
   },
   "private": true,
   "type": "module"

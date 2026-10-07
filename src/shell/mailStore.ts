@@ -1,7 +1,7 @@
 // In-memory mailbox for the prototype. The initial inbox, the contacts and the user come from
-// src/be-mock/samples.json, so everything is fictitious and editable by hand.
+// be-mock/samples.json, so everything is fictitious and editable by hand.
 
-import samples from "../src/be-mock/samples.json";
+import samples from "../be-mock/samples.json";
 
 export type Address = { name: string; email: string };
 

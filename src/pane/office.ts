@@ -1,7 +1,7 @@
 // Thin promise layer over Office.js for the compose item. The task pane only talks to Outlook through
 // these functions; outside Outlook (no mailbox) `inOutlook()` is false and the UI runs read-only.
 
-export const API: string = import.meta.env.VITE_API_BASE;
+export const API: string = import.meta.env.VITE_API_BASE || "/api/outlook-poc";
 export const SUBJECT_SUFFIX = " Outlook extension PoC";
 
 export type Item = { id: string; title: string; html: string };
@@ -31,7 +31,7 @@ export async function fetchJson<T>(path: string): Promise<T> {
   return res.json();
 }
 
-// State shared with the OnMessageSend handler (launchevent.js). sessionData lives for this compose
+// State shared with the add-in's OnMessageSend handler. sessionData lives for this compose
 // session; custom properties are saved with the draft, so a reopened draft keeps its selection too.
 export async function setSession(key: string, value: string): Promise<void> {
   await call<void>((cb) => item().sessionData.setAsync(key, value, cb)).catch(() => {});

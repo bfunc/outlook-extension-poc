@@ -1,9 +1,14 @@
 import { createRoot } from "react-dom/client";
-import { App } from "./App";
-import "./app.css";
+import { API } from "./pane/office";
+import { installMockBackend } from "./be-mock";
+import { installFakeOffice } from "./shell/fakeOffice";
+import { Shell } from "./shell/Shell";
+import "./pane/app.css";
+import "./shell/shell.css";
 
-const root = createRoot(document.getElementById("root")!);
+// Both installed before the task pane code runs: pane/office.ts then sees a mailbox item, and its
+// fetch calls to the test endpoint are answered by the in-browser mock (src/be-mock).
+installMockBackend(API);
+installFakeOffice();
 
-// Office.onReady resolves outside Outlook too (host null), so the pane also opens in a plain browser.
-if (typeof Office !== "undefined") Office.onReady(() => root.render(<App />));
-else root.render(<App />);
+createRoot(document.getElementById("root")!).render(<Shell />);

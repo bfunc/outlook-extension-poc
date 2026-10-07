@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { db, getVersion, resetMockBackend, subscribe } from "../src/be-mock";
+import { db, getVersion, resetMockBackend, subscribe } from "../be-mock";
 
 /** Shows the state of the in-browser mock backend: drafts, submissions, request log. */
 export function BackendInspector({ onClose }: { onClose: () => void }) {

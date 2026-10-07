@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { API, type Item } from "../src/office";
+import { API, type Item } from "../pane/office";
 
 type Draft = { id: string; status: string; items: Item[]; sentAt?: string };
 

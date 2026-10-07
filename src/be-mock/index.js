@@ -1,7 +1,7 @@
-// Mock of the test endpoint (server/server.js), running in the browser.
+// Mock of the add-in test endpoint, running in the browser.
 //
-// Same routes and JSON shapes as the real service, state kept in memory for the life of the page.
-// `installMockBackend(apiBase)` wraps `fetch`, so office.ts and the prototype call it exactly as
+// Same routes and JSON shapes as the real service would have, state kept in memory for the life of the page.
+// `installMockBackend(apiBase)` wraps `fetch`, so pane/office.ts and the shell call it exactly as
 // they would call the real service. Sample data lives in samples.json.
 
 import samples from "./samples.json";

@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "types": ["office-js"]
   },
-  "include": ["src", "prototype"]
+  "include": ["src"]
 }

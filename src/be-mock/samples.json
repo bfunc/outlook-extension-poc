@@ -1,5 +1,5 @@
 {
-  "//": "Fictitious sample data for the Outlook Extension PoC prototype. Edit by hand. Everything is invented: lorem ipsum text, example.com addresses.",
+  "//": "Fictitious sample data for the clickable prototype. Edit by hand. Everything is invented: lorem ipsum text, example.com addresses.",
   "me": {
     "name": "Lorem Ipsum (you, fictitious)",
     "email": "lorem.ipsum@example.com"

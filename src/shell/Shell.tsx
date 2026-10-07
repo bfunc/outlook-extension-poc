@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { App } from "../src/App";
-import { API, appendSubject, buildPayload, submit } from "../src/office";
+import { App } from "../pane/App";
+import { API, appendSubject, buildPayload, submit } from "../pane/office";
 import { composingMessageId, onPaneSend, setComposingMessage } from "./fakeOffice";
 import { ME, mailStore, type Address, type Folder, type Message } from "./mailStore";
 import { ReadPanel } from "./ReadPanel";
@@ -130,7 +130,7 @@ export function Shell() {
     return () => window.clearTimeout(timer);
   }, [composing]);
 
-  // Outlook's Send: what launchevent.js does on OnMessageSend, then the message goes out.
+  // Outlook's Send: what the add-in's OnMessageSend handler does, then the message goes out.
   const sendMessage = useCallback(
     async (id: string) => {
       const m = mailStore.get(id);
