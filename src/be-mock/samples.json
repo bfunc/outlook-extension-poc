@@ -34,36 +34,61 @@
       "email": "treasury@lorem-holdings.example.com"
     }
   ],
-  "items": [
+  "tradingAreas": [
+    "Global Emerging Markets",
+    "GlobalFX",
+    "Core Rates",
+    "Credit",
+    "X-Markets"
+  ],
+  "instruments": [
     {
-      "id": "itm-001",
-      "title": "FX price indication EUR/USD (fictitious)",
-      "html": "<p>Lorem ipsum indicative spot <strong>1.0842 / 1.0845</strong>, valid for lorem minutes. Dolor sit amet, consectetur adipiscing elit.</p>"
+      "name": "Spot FX, Physical Metals",
+      "underlyingLabel": "Underlying(s)"
     },
     {
-      "id": "itm-002",
-      "title": "Term sheet summary: 3Y EUR note (fictitious)",
-      "html": "<p>Notional lorem 10m, coupon <strong>ipsum 3.10%</strong> p.a., maturity dolor 2029. Sed do eiusmod tempor incididunt. Full term sheet: <a href=\"https://example.com/term-sheet\">example.com/term-sheet</a>.</p>"
+      "name": "Loans",
+      "underlyingLabel": "Underlying(s)"
     },
     {
-      "id": "itm-003",
-      "title": "Research snippet: rates outlook (fictitious)",
-      "html": "<p>Lorem ipsum: we expect the curve to <strong>consectetur</strong> in Q3, driven by adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation.</p>"
+      "name": "Cash Bonds",
+      "underlyingLabel": "Instrument ID"
     },
     {
-      "id": "itm-004",
-      "title": "Trade confirmation summary #LRM-4821 (fictitious)",
-      "html": "<p>Buy lorem 5,000 ipsum shares at dolor 42.10, settlement T+2. <strong>Status: ipsum confirmed</strong>. Duis aute irure dolor in reprehenderit.</p>"
+      "name": "Cash Equities",
+      "underlyingLabel": "Instrument ID"
     },
     {
-      "id": "itm-005",
-      "title": "Settlement reminder (fictitious)",
-      "html": "<p>Lorem ipsum settlement for trade #LRM-4790 is due in <strong>2 business days</strong>. Please dolor sit amet the instructions at <a href=\"https://example.com/settlement\">example.com/settlement</a>.</p>"
+      "name": "CDS indices",
+      "underlyingLabel": "Underlying(s)"
     },
     {
-      "id": "itm-006",
-      "title": "KYC refresh notice (fictitious)",
-      "html": "<p>Lorem ipsum KYC documents for Lorem Holdings expire on dolor 30. <strong>Action: sit amet</strong> before the review date. Excepteur sint occaecat cupidatat non proident.</p>"
+      "name": "CDS excl. indices",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "Forwards / NDFs / Futures",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "Swaps but not CDS",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "Options incl. listed Options",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "Structured Products",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "QIS",
+      "underlyingLabel": "Underlying(s)"
+    },
+    {
+      "name": "Repos",
+      "underlyingLabel": "Underlying(s)"
     }
   ],
   "inbox": [

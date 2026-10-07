@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { API, type Item } from "../pane/office";
+import { KeyElementsView } from "../pane/KeyElements";
+import type { KeyElements } from "../pane/keyElementsModel";
+import { API } from "../pane/office";
 
-type Draft = { id: string; status: string; items: Item[]; sentAt?: string };
+type Draft = { id: string; status: string; keyElements: KeyElements | null; sentAt?: string };
 
-/** The pane as a recipient sees it: the items that were sent with this mail, looked up by x-idea-id. */
+/** The pane as a recipient sees it: the key elements sent with this mail, looked up by x-idea-id. */
 export function ReadPanel({ ideaId }: { ideaId: string | undefined }) {
   const [state, setState] = useState<{ draft?: Draft; error?: string; loading: boolean }>({ loading: !!ideaId });
 
@@ -27,28 +29,15 @@ export function ReadPanel({ ideaId }: { ideaId: string | undefined }) {
 
   return (
     <main>
-      <header>
-        <h1>Outlook Extension PoC</h1>
-        <p className="note">Read mode: items linked to this message through its <code>x-idea-id</code> header.</p>
-      </header>
-      <section>
-        <h2>Items {state.draft && <span className="count">{state.draft.items.length}</span>}</h2>
-        {!ideaId && <p className="hint">This message carries no x-idea-id header, so there is nothing to show.</p>}
-        {state.loading && <p className="hint">Loading…</p>}
-        {state.error && <p className="status error">{state.error}</p>}
-        {state.draft && state.draft.items.length === 0 && <p className="hint">The sender selected no items.</p>}
-        <ul className="list">
-          {state.draft?.items.map((i) => (
-            <li key={i.id} className="read-item">
-              <strong>{i.title}</strong>
-              <div dangerouslySetInnerHTML={{ __html: i.html }} />
-            </li>
-          ))}
-        </ul>
-      </section>
+      <h1>Key Elements</h1>
+      <p className="note">Read mode: what was sent with this message, looked up by its <code>x-idea-id</code> header.</p>
+      {!ideaId && <p className="note">This message carries no x-idea-id header, so there is nothing to show.</p>}
+      {state.loading && <p className="note">Loading…</p>}
+      {state.error && <p className="status error">{state.error}</p>}
+      {state.draft && (state.draft.keyElements ? <KeyElementsView value={state.draft.keyElements} /> : <p className="note">The sender saved no key elements.</p>)}
       {ideaId && (
         <footer>
-          <p className="hint">
+          <p className="note">
             x-idea-id <code>{ideaId}</code>
             {state.draft?.sentAt && <> · sent {new Date(state.draft.sentAt).toLocaleString()}</>}
           </p>

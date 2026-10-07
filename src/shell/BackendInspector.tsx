@@ -1,5 +1,12 @@
 import { useSyncExternalStore } from "react";
 import { db, getVersion, resetMockBackend, subscribe } from "../be-mock";
+import { cardTitle, type KeyElements } from "../pane/keyElementsModel";
+
+function summary(ke: KeyElements | null | undefined): string {
+  if (!ke) return "–";
+  const legs = ke.legs.map((l) => l.instrument).join(", ");
+  return `${ke.status} ${cardTitle(ke)} · ${ke.tradingArea || "no area"} · ${ke.legs.length} leg${ke.legs.length === 1 ? "" : "s"}${legs ? ` (${legs})` : ""}`;
+}
 
 /** Shows the state of the in-browser mock backend: drafts, submissions, request log. */
 export function BackendInspector({ onClose }: { onClose: () => void }) {
@@ -22,14 +29,14 @@ export function BackendInspector({ onClose }: { onClose: () => void }) {
           {drafts.length === 0 && <p className="ol-empty">None yet. Press New mail.</p>}
           <table>
             <thead>
-              <tr><th>x-idea-id</th><th>status</th><th>items</th><th>recipients</th><th>subject</th></tr>
+              <tr><th>x-idea-id</th><th>status</th><th>key elements</th><th>recipients</th><th>subject</th></tr>
             </thead>
             <tbody>
               {drafts.map((d) => (
                 <tr key={d.id}>
                   <td><code>{d.id.slice(0, 8)}</code></td>
                   <td>{d.status}</td>
-                  <td>{d.itemIds.join(", ") || "–"}</td>
+                  <td>{summary(d.keyElements as KeyElements | null)}</td>
                   <td>{d.recipients.join(", ") || "–"}</td>
                   <td>{d.subject || "–"}</td>
                 </tr>
@@ -40,7 +47,7 @@ export function BackendInspector({ onClose }: { onClose: () => void }) {
           {submissions.length === 0 && <p className="ol-empty">None yet. Send a mail.</p>}
           <table>
             <thead>
-              <tr><th>id</th><th>received</th><th>ideaId</th><th>items</th><th>recipients</th><th>email</th></tr>
+              <tr><th>id</th><th>received</th><th>ideaId</th><th>key elements</th><th>recipients</th><th>email</th></tr>
             </thead>
             <tbody>
               {submissions.map((s) => (
@@ -48,7 +55,7 @@ export function BackendInspector({ onClose }: { onClose: () => void }) {
                   <td><code>{s.id.slice(0, 8)}</code></td>
                   <td>{new Date(s.receivedAt).toLocaleTimeString()}</td>
                   <td><code>{s.ideaId ? s.ideaId.slice(0, 8) : "–"}</code></td>
-                  <td>{s.itemIds.join(", ") || "–"}</td>
+                  <td>{summary(s.keyElements as KeyElements | null)}</td>
                   <td>{s.recipients.join(", ")}</td>
                   <td>{s.email.length} chars of HTML</td>
                 </tr>

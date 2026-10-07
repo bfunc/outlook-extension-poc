@@ -62,7 +62,7 @@ async function createBackendDraft(): Promise<string> {
   return data.draft.id as string;
 }
 
-async function updateBackendDraft(id: string, patch: { itemIds?: string[]; recipients?: string[]; subject?: string }) {
+async function updateBackendDraft(id: string, patch: { keyElements?: unknown; recipients?: string[]; subject?: string }) {
   await fetch(`${API}/drafts/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -109,7 +109,7 @@ export function Shell() {
       .catch((e) => say(`Could not create the draft on the server: ${(e as Error).message}`));
   }
 
-  // The draft on the server follows the message: item selection (written by the pane into the
+  // The draft on the server follows the message: the key elements (written by the pane into the
   // custom properties), recipients and subject.
   const synced = useRef<Record<string, string>>({});
   useEffect(() => {
@@ -117,7 +117,7 @@ export function Shell() {
     const ideaId = composing.headers[IDEA_HEADER];
     if (!ideaId) return;
     const patch = {
-      itemIds: JSON.parse(composing.customProperties.pocItemIds || "[]") as string[],
+      keyElements: JSON.parse(composing.customProperties.pocKeyElements || "null") as unknown,
       recipients: [...composing.to, ...composing.cc, ...composing.bcc].map((a) => a.email),
       subject: composing.subject,
     };
@@ -145,7 +145,7 @@ export function Shell() {
           await appendSubject();
           const ideaId = m.headers[IDEA_HEADER];
           if (props["session:pocSubmitted"] !== "1" && props.pocSubmitted !== "1") {
-            const payload = await buildPayload(JSON.parse(props.pocItemIds || "[]"));
+            const payload = await buildPayload();
             await submit({ ...payload, ...(ideaId ? { ideaId } : {}) });
           } else if (ideaId) {
             await fetch(`${API}/drafts/${ideaId}`, {

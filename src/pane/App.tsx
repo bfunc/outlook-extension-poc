@@ -1,121 +1,71 @@
-import { useEffect, useState } from "react";
-import {
-  addTo, appendSubject, applyItems, buildPayload, fetchJson, getSaved, inOutlook, setSession, submit, trySend,
-  type Contact, type Item,
-} from "./office";
+import { useEffect, useRef, useState } from "react";
+import { KeyElementsForm, KeyElementsView } from "./KeyElements";
+import { emptyKeyElements, parseKeyElements, type KeyElements } from "./keyElementsModel";
+import { getSaved, inOutlook, setSession } from "./office";
 
-type Status = { kind: "info" | "ok" | "error"; text: string } | null;
+type Mode = "edit" | "view";
+
+const STEPS = ["Key elements", "Select recipients", "Check and publish"];
 
 export function App() {
   const outlook = inOutlook();
-  const [items, setItems] = useState<Item[]>([]);
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [added, setAdded] = useState<string[]>([]);
-  const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState<Status>(null);
+  const [ke, setKe] = useState<KeyElements>(emptyKeyElements);
+  const [mode, setMode] = useState<Mode>("edit");
+  const [ready, setReady] = useState(!outlook);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([fetchJson<Item[]>("items"), fetchJson<Contact[]>("emails")])
-      .then(([i, c]) => { setItems(i); setContacts(c); })
-      .catch((e) => setStatus({ kind: "error", text: `Could not load the lists: ${e.message}` }));
     if (!outlook) return;
     // Marks this message for the OnMessageSend handler, which acts only on messages where the pane was used.
     setSession("pocUsed", "1").catch(() => {});
-    // A reopened draft: restore the items selected last time.
-    getSaved("pocItemIds")
-      .then((v) => { const ids = JSON.parse(v || "[]"); if (Array.isArray(ids)) setSelected(ids); })
-      .catch(() => {});
+    // A reopened draft: restore what was entered last time.
+    Promise.all([getSaved("pocKeyElements"), getSaved("pocMode")])
+      .then(([saved, savedMode]) => {
+        const parsed = parseKeyElements(saved);
+        if (parsed) setKe(parsed);
+        if (savedMode === "view" && parsed) setMode("view");
+      })
+      .catch(() => {})
+      .finally(() => setReady(true));
   }, [outlook]);
 
-  async function run(label: string, fn: () => Promise<string | void>) {
-    setBusy(true);
-    setStatus({ kind: "info", text: label });
-    try {
-      const done = await fn();
-      setStatus(done ? { kind: "ok", text: done } : null);
-    } catch (e) {
-      setStatus({ kind: "error", text: (e as Error).message || String(e) });
-    } finally {
-      setBusy(false);
+  // Every change is saved with the draft, after a short pause, so the send handler and the backend
+  // see the latest state.
+  const first = useRef(true);
+  useEffect(() => {
+    if (!outlook || !ready) return;
+    if (first.current) {
+      first.current = false;
+      return;
     }
-  }
-
-  function toggleItem(id: string) {
-    const next = selected.includes(id) ? selected.filter((s) => s !== id) : [...selected, id];
-    setSelected(next);
-    if (!outlook) return;
-    const chosen = items.filter((i) => next.includes(i.id));
-    run("Updating the message…", () => applyItems(chosen));
-  }
-
-  function addContact(c: Contact) {
-    if (!outlook || added.includes(c.email)) return;
-    run(`Adding ${c.email}…`, async () => {
-      await addTo(c);
-      setAdded((a) => [...a, c.email]);
-      return `${c.email} added to To`;
-    });
-  }
-
-  function send() {
-    run("Sending to the test endpoint…", async () => {
-      const payload = await buildPayload(selected);
-      if (payload.recipients.length === 0) throw new Error("Add at least one recipient first.");
-      const { id } = await submit(payload);
-      await setSession("pocSubmitted", "1");
-      await appendSubject();
-      const sent = await trySend();
-      return sent
-        ? `Posted (${id.slice(0, 8)}) and sent.`
-        : `Posted (${id.slice(0, 8)}), subject updated. Now press Send in Outlook.`;
-    });
-  }
+    const t = window.setTimeout(() => {
+      Promise.all([setSession("pocKeyElements", JSON.stringify(ke)), setSession("pocMode", mode)]).catch((e) =>
+        setError(`Could not save to the draft: ${(e as Error).message}`),
+      );
+    }, 300);
+    return () => window.clearTimeout(t);
+  }, [ke, mode, outlook, ready]);
 
   return (
     <main>
-      <header>
-        <h1>Outlook Extension PoC</h1>
-        {!outlook && <p className="note">Open this panel from a new message in Outlook. Lists are read-only here.</p>}
-      </header>
-
-      <section>
-        <h2>Items <span className="count">{selected.length}/{items.length}</span></h2>
-        <p className="hint">Selected items go to the top of the message.</p>
-        <ul className="list">
-          {items.map((i) => (
-            <li key={i.id}>
-              <label>
-                <input type="checkbox" checked={selected.includes(i.id)} disabled={busy} onChange={() => toggleItem(i.id)} />
-                <span>{i.title}</span>
-              </label>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <h2>List of emails</h2>
-        <p className="hint">Click to add to To.</p>
-        <ul className="list">
-          {contacts.map((c) => {
-            const isAdded = added.includes(c.email);
-            return (
-              <li key={c.email}>
-                <button className="contact" disabled={busy || isAdded || !outlook} onClick={() => addContact(c)}>
-                  <span className="name">{c.name}</span>
-                  <span className="email">{c.email}</span>
-                  <span className="tag">{isAdded ? "added" : "+ To"}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
-
+      <ol className="steps" aria-label="Steps">
+        {STEPS.map((s, i) => (
+          <li key={s} className={i === 0 ? "active" : ""}>
+            <span className="num">{i === 0 ? "●" : i + 1}</span>
+            <span>{s}</span>
+          </li>
+        ))}
+      </ol>
+      <h1>Key Elements</h1>
+      {!outlook && <p className="note">Open this panel from a new message in Outlook.</p>}
+      {mode === "edit" ? <KeyElementsForm value={ke} onChange={setKe} /> : <KeyElementsView value={ke} />}
       <footer>
-        <button className="primary" disabled={busy || !outlook} onClick={send}>Send</button>
-        {status && <p className={`status ${status.kind}`} role="status">{status.text}</p>}
+        {mode === "edit" ? (
+          <button className="primary" disabled={!outlook} onClick={() => setMode("view")}>Save</button>
+        ) : (
+          <button className="primary" disabled={!outlook} onClick={() => setMode("edit")}>Edit</button>
+        )}
+        {error && <p className="status error" role="status">{error}</p>}
       </footer>
     </main>
   );

@@ -11,10 +11,21 @@ import samples from "./samples.json";
 // ---------------------------------------------------------------------------------------------
 
 /**
- * @typedef {Object} Item         An item the user can insert into a mail (samples.json: items).
+ * @typedef {Object} KeyElements  What the pane edits (see pane/keyElementsModel.ts): one idea.
+ * @property {"New" | "Pipeline" | "RevEnq"} status
+ * @property {string} headline
+ * @property {string} tradingArea            one of samples.json: tradingAreas
+ * @property {Leg[]} legs
+ *
+ * @typedef {Object} Leg
  * @property {string} id
- * @property {string} title
- * @property {string} html
+ * @property {string} instrument             one of samples.json: instruments
+ * @property {boolean} emea                  mainly traded in EMEA
+ * @property {boolean} factual               factual market comment, not a recommendation
+ * @property {"Buy" | "Pay" | "Receive" | "Sell"} side
+ * @property {string} price
+ * @property {string} underlying
+ * @property {string} timeHorizon
  *
  * @typedef {Object} Contact      An address the pane offers for To (samples.json: contacts).
  * @property {string} name
@@ -23,7 +34,7 @@ import samples from "./samples.json";
  * @typedef {Object} Draft        The backend record linked to a mail through its x-idea-id header.
  * @property {string} id                       uuid, the value of the x-idea-id header
  * @property {"draft" | "sent"} status
- * @property {string[]} itemIds                items selected in the pane
+ * @property {KeyElements | null} keyElements  what the pane saved with the mail
  * @property {string[]} recipients             e-mail addresses (To, Cc, Bcc)
  * @property {string} subject
  * @property {string} createdAt                ISO date
@@ -34,14 +45,11 @@ import samples from "./samples.json";
  * @typedef {Object} Submission   What the add-in posts when a mail is sent (POST submit).
  * @property {string} id
  * @property {string} receivedAt               ISO date
- * @property {string[]} itemIds
+ * @property {KeyElements | null} keyElements
  * @property {string} email                    the mail body as HTML
  * @property {string[]} recipients
  * @property {string} [ideaId]                 x-idea-id of the mail, when known
  */
-
-/** @type {Item[]} */
-export const ITEMS = samples.items;
 
 /** @type {Contact[]} */
 export const CONTACTS = samples.contacts;
@@ -101,7 +109,7 @@ export function createDraft() {
   const draft = {
     id: crypto.randomUUID(),
     status: "draft",
-    itemIds: [],
+    keyElements: null,
     recipients: [],
     subject: "",
     createdAt: now(),
@@ -118,9 +126,9 @@ export function getDraft(id) {
   return db.drafts.get(id);
 }
 
-/** A draft as the API returns it: with its items resolved. */
+/** A draft as the API returns it. */
 export function draftView(draft) {
-  return { ...draft, items: draft.itemIds.map((id) => ITEMS.find((i) => i.id === id)).filter(Boolean) };
+  return { ...draft };
 }
 
 /** The list view, without recipient addresses. */
@@ -129,18 +137,18 @@ export function listDrafts() {
 }
 
 /**
- * Merges `patch` into a draft. Allowed keys: itemIds, recipients, subject, status ("sent" only).
+ * Merges `patch` into a draft. Allowed keys: keyElements, recipients, subject, status ("sent" only).
  * @param {Draft} draft
  * @param {Partial<Draft>} patch
  * @returns {string | undefined} a validation error, or nothing on success
  */
 export function updateDraft(draft, patch) {
-  if (patch.itemIds !== undefined && !isStringArray(patch.itemIds)) return "itemIds must be string[]";
+  if (patch.keyElements !== undefined && !isKeyElements(patch.keyElements)) return "keyElements must be an object with legs[] or null";
   if (patch.recipients !== undefined && !isStringArray(patch.recipients)) return "recipients must be string[]";
   if (patch.subject !== undefined && typeof patch.subject !== "string") return "subject must be a string";
   if (patch.status !== undefined && patch.status !== "sent") return 'status can only be set to "sent"';
 
-  if (patch.itemIds !== undefined) draft.itemIds = patch.itemIds;
+  if (patch.keyElements !== undefined) draft.keyElements = patch.keyElements;
   if (patch.recipients !== undefined) draft.recipients = patch.recipients;
   if (patch.subject !== undefined) draft.subject = patch.subject.slice(0, 500);
   if (patch.status === "sent") markSent(draft, now());
@@ -156,16 +164,16 @@ export function updateDraft(draft, patch) {
 export function submit(body) {
   const valid =
     body &&
-    isStringArray(body.itemIds) &&
+    isKeyElements(body.keyElements) &&
     typeof body.email === "string" &&
     isStringArray(body.recipients) &&
     (body.ideaId === undefined || typeof body.ideaId === "string");
-  if (!valid) return { error: "expected { itemIds: string[], email: string, recipients: string[], ideaId?: string }" };
+  if (!valid) return { error: "expected { keyElements: object | null, email: string, recipients: string[], ideaId?: string }" };
 
   const submission = {
     id: crypto.randomUUID(),
     receivedAt: now(),
-    itemIds: body.itemIds,
+    keyElements: body.keyElements,
     email: body.email,
     recipients: body.recipients,
     ideaId: body.ideaId,
@@ -188,6 +196,10 @@ function markSent(draft, at) {
   draft.sentAt = at;
 }
 
+function isKeyElements(value) {
+  return value === null || (typeof value === "object" && Array.isArray(value.legs));
+}
+
 function isStringArray(value) {
   return Array.isArray(value) && value.every((x) => typeof x === "string");
 }
@@ -202,7 +214,6 @@ function short(id) {
 
 export function route(method, path, body) {
   if (method === "GET" && path === "health") return ok(200, { ok: true });
-  if (method === "GET" && path === "items") return ok(200, ITEMS);
   if (method === "GET" && path === "emails") return ok(200, CONTACTS);
 
   if (method === "POST" && path === "drafts") return ok(201, { ok: true, draft: draftView(createDraft()) });
