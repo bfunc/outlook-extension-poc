@@ -8,6 +8,7 @@ export function Recipients() {
   const [added, setAdded] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     fetchJson<Contact[]>("emails")
@@ -25,12 +26,17 @@ export function Recipients() {
       .finally(() => setBusy(false));
   }
 
+  const needle = filter.trim().toLowerCase();
+  const shown = needle ? contacts.filter((c) => `${c.name} ${c.email}`.toLowerCase().includes(needle)) : contacts;
+
   return (
     <>
       <h1>Select recipients</h1>
       <p className="note">Click an address to add it to To.</p>
+      <input type="search" className="filter" placeholder="Filter by name or address" value={filter} onChange={(e) => setFilter(e.target.value)} aria-label="Filter recipients" />
+      {needle && shown.length === 0 && <p className="note">No match.</p>}
       <ul className="contacts">
-        {contacts.map((c) => {
+        {shown.map((c) => {
           const isAdded = added.includes(c.email);
           return (
             <li key={c.email}>

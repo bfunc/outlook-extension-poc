@@ -24,6 +24,7 @@ h1 { font-size: 20px; font-weight: 700; margin: 0; }
 .steps button.active { color: var(--fg); font-weight: 600; }
 .steps button.active .num { background: var(--accent); }
 
+.filter { padding: 9px 12px; }
 .contacts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .contact { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 0 8px; text-align: left; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
 .contact:hover:not(:disabled) { border-color: var(--accent); }
