@@ -2,15 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { KeyElementsForm, KeyElementsView } from "./KeyElements";
 import { emptyKeyElements, parseKeyElements, type KeyElements } from "./keyElementsModel";
 import { getSaved, inOutlook, setSession } from "./office";
+import { Recipients } from "./Recipients";
 
 type Mode = "edit" | "view";
+type Tab = 0 | 1;
 
-const STEPS = ["Key elements", "Select recipients"];
+const TABS = ["Key elements", "Select recipients"];
 
 export function App() {
   const outlook = inOutlook();
   const [ke, setKe] = useState<KeyElements>(emptyKeyElements);
   const [mode, setMode] = useState<Mode>("edit");
+  const [tab, setTab] = useState<Tab>(0);
   const [ready, setReady] = useState(!outlook);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,25 +51,31 @@ export function App() {
 
   return (
     <main>
-      <ol className="steps" aria-label="Steps">
-        {STEPS.map((s, i) => (
-          <li key={s} className={i === 0 ? "active" : ""}>
-            <span className="num">{i === 0 ? "●" : i + 1}</span>
+      <div className="steps" role="tablist" aria-label="Steps">
+        {TABS.map((s, i) => (
+          <button key={s} type="button" role="tab" aria-selected={tab === i} className={tab === i ? "active" : ""} onClick={() => setTab(i as Tab)}>
+            <span className="num">{tab === i ? "●" : i + 1}</span>
             <span>{s}</span>
-          </li>
+          </button>
         ))}
-      </ol>
-      <h1>Key Elements</h1>
+      </div>
       {!outlook && <p className="note">Open this panel from a new message in Outlook.</p>}
-      {mode === "edit" ? <KeyElementsForm value={ke} onChange={setKe} /> : <KeyElementsView value={ke} />}
-      <footer>
-        {mode === "edit" ? (
-          <button className="primary" disabled={!outlook} onClick={() => setMode("view")}>Save</button>
-        ) : (
-          <button className="primary" disabled={!outlook} onClick={() => setMode("edit")}>Edit</button>
-        )}
-        {error && <p className="status error" role="status">{error}</p>}
-      </footer>
+      {tab === 0 ? (
+        <>
+          <h1>Key Elements</h1>
+          {mode === "edit" ? <KeyElementsForm value={ke} onChange={setKe} /> : <KeyElementsView value={ke} />}
+          <footer>
+            {mode === "edit" ? (
+              <button className="primary" disabled={!outlook} onClick={() => setMode("view")}>Save</button>
+            ) : (
+              <button className="primary" disabled={!outlook} onClick={() => setMode("edit")}>Edit</button>
+            )}
+            {error && <p className="status error" role="status">{error}</p>}
+          </footer>
+        </>
+      ) : (
+        <Recipients />
+      )}
     </main>
   );
 }

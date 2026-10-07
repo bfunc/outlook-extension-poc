@@ -10,9 +10,10 @@ npm run build      # static site in dist/, to be served under https://<host>/sta
 
 ## The idea being prototyped
 
-An add-in with a side panel in the compose window, shown as a 2-step wizard (Key elements, Select recipients). Only step 1 is built so far.
+An add-in with a side panel in the compose window, with two tabs, Key elements and Select recipients. Switching tabs never asks about unsaved data; the form state is kept.
 
 - **Key Elements** (step 1). A card for one idea: status (New / Pipeline / RevEnq), headline, trading area, and instrument legs added from a list. Each leg has an EMEA checkbox; when checked, a "factual market comment" checkbox appears; a leg that is EMEA and not factual is an investment recommendation and gets Buy / Pay / Receive / Sell, Price, Underlying(s) (called Instrument ID for Cash Equities and Cash Bonds) and Time Horizon. The card is titled IDEA, or INVESTMENT RECOMMENDATION when any leg is one. **Save** switches to a read-only view card (`NEW INVESTMENT RECOMMENDATION`, trading area, legs with side chips); **Edit** goes back. No validation. The mail body is not touched.
+- **Select recipients** (tab 2). The list of emails from the endpoint; a click adds the address to To, and addresses already in To show as added.
 - **Draft linked to a backend record.** New mail creates a draft on the endpoint (`POST /drafts`) and stores its id in the message as the `x-idea-id` header. The key elements, recipients and subject are mirrored to it while editing (`PUT /drafts/:id`).
 - **Send** (Outlook's button) posts the key elements, the body and the recipients as JSON with the `ideaId`, appends " Outlook extension PoC" to the subject, and the endpoint marks the draft as sent. The message moves to Sent Items and a copy is delivered to the Inbox so it can be opened as a recipient.
 - **Read mode.** Opening a received message that carries `x-idea-id` and pressing **Outlook Extension PoC** shows the same view card, resolved from `GET /drafts/:id`. "View message headers" shows the header.

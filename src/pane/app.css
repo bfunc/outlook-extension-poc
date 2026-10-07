@@ -17,11 +17,20 @@ main { display: flex; flex-direction: column; gap: 14px; padding: 12px 14px 20px
 h1 { font-size: 20px; font-weight: 700; margin: 0; }
 .note, .muted { margin: 0; color: var(--muted); font-size: 13px; }
 
-.steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
-.steps li { display: flex; align-items: center; gap: 6px; }
+.steps { display: flex; gap: 12px; font-size: 12px; color: var(--muted); flex-wrap: wrap; }
+.steps button { display: flex; align-items: center; gap: 6px; padding: 4px 6px 4px 2px; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.steps button:hover { background: #e8e9ee; }
 .steps .num { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: #6b6f78; color: #fff; font-size: 11px; }
-.steps li.active { color: var(--fg); font-weight: 600; }
-.steps li.active .num { background: var(--accent); }
+.steps button.active { color: var(--fg); font-weight: 600; }
+.steps button.active .num { background: var(--accent); }
+
+.contacts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.contact { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 0 8px; text-align: left; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: inherit; font: inherit; cursor: pointer; }
+.contact:hover:not(:disabled) { border-color: var(--accent); }
+.contact:disabled { cursor: default; opacity: 0.7; }
+.contact .name { font-weight: 600; }
+.contact .email { grid-column: 1; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+.contact .tag { grid-column: 2; grid-row: 1 / span 2; align-self: center; font-size: 13px; color: var(--accent); font-weight: 600; }
 
 .card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; background: var(--card); display: flex; flex-direction: column; gap: 12px; }
 .card.rec-card { border: 2px solid var(--accent); }

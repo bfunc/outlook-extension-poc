@@ -45,6 +45,14 @@ export async function getSaved(key: string): Promise<string> {
 
 const emails = (list: Office.EmailAddressDetails[]) => list.map((r) => r.emailAddress).filter(Boolean);
 
+export function addTo(c: Contact): Promise<void> {
+  return call<void>((cb) => item().to.addAsync([{ displayName: c.name, emailAddress: c.email }], cb));
+}
+
+export async function currentTo(): Promise<string[]> {
+  return emails(await call<Office.EmailAddressDetails[]>((cb) => item().to.getAsync(cb)));
+}
+
 /** What is posted on send: the key elements saved with the draft, the body and the recipients. */
 export async function buildPayload(): Promise<Payload> {
   const it = item();
