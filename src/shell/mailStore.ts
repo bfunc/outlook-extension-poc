@@ -38,7 +38,17 @@ function at(daysAgo: number, time: string): Date {
   return d;
 }
 
-export const INITIAL_MESSAGES: Message[] = samples.inbox.map((m) => ({
+type InboxSample = {
+  from: string;
+  subject: string;
+  daysAgo: number;
+  time: string;
+  unread: boolean;
+  body: string[];
+  ideaId?: string;
+};
+
+export const INITIAL_MESSAGES: Message[] = (samples.inbox as InboxSample[]).map((m) => ({
   id: nextId(),
   folder: "inbox",
   from: samples.contacts.find((c) => c.email === m.from) ?? { name: m.from, email: m.from },
@@ -49,7 +59,7 @@ export const INITIAL_MESSAGES: Message[] = samples.inbox.map((m) => ({
   bodyHtml: m.body.map((p) => `<p>${p}</p>`).join(""),
   date: at(m.daysAgo, m.time),
   unread: m.unread,
-  headers: {},
+  headers: (m.ideaId ? { "x-idea-id": m.ideaId } : {}) as Record<string, string>,
   customProperties: {},
 }));
 

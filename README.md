@@ -31,7 +31,7 @@ An add-in with a side panel in the compose window, shown as a 2-step wizard (Key
 | `src/shell/ReadPanel.tsx` | The panel in read mode. |
 | `src/shell/BackendInspector.tsx` | The mock backend console. |
 | `src/be-mock/index.js` | The endpoint mock, plain JS: entities (`Draft`, `Submission`), the in-memory `db`, one function per operation, a `route()` table, and `installMockBackend()` which answers `fetch` calls to the API base. |
-| `src/be-mock/samples.json` | All sample data, edit by hand: `me`, `contacts` (inbox senders), `tradingAreas`, `instruments` (name + which label the underlying field gets), `inbox` (initial messages; `daysAgo` + `time` keep them recent, `body` is a list of HTML paragraphs). |
+| `src/be-mock/samples.json` | All sample data, edit by hand: `me`, `contacts` (inbox senders), `tradingAreas`, `instruments` (name + which label the underlying field gets), `inbox` (initial messages; `daysAgo` + `time` keep them recent, `body` is a list of HTML paragraphs; a mail with `ideaId` + `keyElements` arrives already linked to a sent backend draft, so its read-mode pane shows a card). |
 
 ## Endpoint the mock implements
 

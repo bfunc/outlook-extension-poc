@@ -97,8 +97,37 @@ export function resetMockBackend() {
   db.drafts.clear();
   db.submissions.length = 0;
   db.log.length = 0;
+  seedFromSamples();
   changed("reset");
 }
+
+/** Inbox mails in samples.json that carry ideaId + keyElements get a matching sent draft. */
+function seedFromSamples() {
+  for (const mail of samples.inbox) {
+    if (!mail.ideaId || !mail.keyElements) continue;
+    const [hours, minutes] = String(mail.time || "09:00").split(":").map(Number);
+    const date = new Date();
+    date.setDate(date.getDate() - mail.daysAgo);
+    date.setHours(hours, minutes, 0, 0);
+    const at = date.toISOString();
+    db.drafts.set(mail.ideaId, {
+      id: mail.ideaId,
+      status: "sent",
+      keyElements: withLegIds(mail.keyElements),
+      recipients: [samples.me.email],
+      subject: mail.subject,
+      createdAt: at,
+      updatedAt: at,
+      sentAt: at,
+    });
+  }
+}
+
+function withLegIds(keyElements) {
+  return { ...keyElements, legs: keyElements.legs.map((leg, i) => ({ id: leg.id || `leg-${i + 1}`, ...leg })) };
+}
+
+seedFromSamples();
 
 // ---------------------------------------------------------------------------------------------
 // Operations (one per route)

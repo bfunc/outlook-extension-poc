@@ -1,5 +1,5 @@
 {
-  "//": "Fictitious sample data for the clickable prototype. Edit by hand. Everything is invented: lorem ipsum text, example.com addresses.",
+  "//": "Fictitious sample data for the clickable prototype. Edit by hand. Everything is invented: lorem ipsum text, example.com addresses. An inbox mail with ideaId + keyElements arrives already linked to a sent backend draft, so the read-mode pane has something to show.",
   "me": {
     "name": "Lorem Ipsum (you, fictitious)",
     "email": "lorem.ipsum@example.com"
@@ -103,7 +103,33 @@
         "Thank you for the indication. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Could you send the <strong>EUR/USD forward</strong> levels for ipsum 3 and 6 months?",
         "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         "Kind regards,<br/>Magna Aliqua<br/>Treasury, Lorem Holdings (fictitious)"
-      ]
+      ],
+      "ideaId": "seed-idea-0001",
+      "keyElements": {
+        "status": "New",
+        "headline": "FX hedge for Q3 receivables (fictitious)",
+        "tradingArea": "GlobalFX",
+        "legs": [
+          {
+            "instrument": "Forwards / NDFs / Futures",
+            "emea": true,
+            "factual": false,
+            "side": "Buy",
+            "price": "1.0890",
+            "underlying": "EURUSD 3M forward (fictitious)",
+            "timeHorizon": "3 months"
+          },
+          {
+            "instrument": "Options incl. listed Options",
+            "emea": true,
+            "factual": false,
+            "side": "Sell",
+            "price": "0.45%",
+            "underlying": "EURUSD 6M call 1.10 (fictitious)",
+            "timeHorizon": "Good when sent"
+          }
+        ]
+      }
     },
     {
       "from": "settlements@example.com",
@@ -116,7 +142,24 @@
         "Lorem ipsum settlement instructions for trade <strong>#LRM-4790</strong> are missing the dolor sit amet. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         "Please confirm by ipsum 16:00.",
         "Settlements (fictitious)"
-      ]
+      ],
+      "ideaId": "seed-idea-0002",
+      "keyElements": {
+        "status": "Pipeline",
+        "headline": "Settlement instructions for #LRM-4790 (fictitious)",
+        "tradingArea": "Credit",
+        "legs": [
+          {
+            "instrument": "Cash Bonds",
+            "emea": true,
+            "factual": true,
+            "side": "Buy",
+            "price": "",
+            "underlying": "",
+            "timeHorizon": "Good when sent"
+          }
+        ]
+      }
     },
     {
       "from": "market.risk@example.com",
@@ -128,7 +171,33 @@
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. The margin requirement for <strong>Lorem Holdings</strong> increased by ipsum 1.2m overnight.",
         "Action required by dolor 12:00. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
         "Market Risk (fictitious)"
-      ]
+      ],
+      "ideaId": "seed-idea-0003",
+      "keyElements": {
+        "status": "RevEnq",
+        "headline": "Margin call: Lorem Holdings (fictitious)",
+        "tradingArea": "Global Emerging Markets",
+        "legs": [
+          {
+            "instrument": "Swaps but not CDS",
+            "emea": true,
+            "factual": false,
+            "side": "Pay",
+            "price": "4.15%",
+            "underlying": "Lorem IRS 5Y (fictitious)",
+            "timeHorizon": "Good when sent"
+          },
+          {
+            "instrument": "Repos",
+            "emea": false,
+            "factual": false,
+            "side": "Buy",
+            "price": "",
+            "underlying": "",
+            "timeHorizon": "Good when sent"
+          }
+        ]
+      }
     },
     {
       "from": "research@example.com",
