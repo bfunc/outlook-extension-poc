@@ -10,7 +10,7 @@ npm run build      # static site in dist/, to be served under https://<host>/sta
 
 ## The idea being prototyped
 
-An add-in with a side panel in the compose window, shown as a 3-step wizard (Key elements, Select recipients, Check and publish). Only step 1 is built so far.
+An add-in with a side panel in the compose window, shown as a 2-step wizard (Key elements, Select recipients). Only step 1 is built so far.
 
 - **Key Elements** (step 1). A card for one idea: status (New / Pipeline / RevEnq), headline, trading area, and instrument legs added from a list. Each leg has an EMEA checkbox; when checked, a "factual market comment" checkbox appears; a leg that is EMEA and not factual is an investment recommendation and gets Buy / Pay / Receive / Sell, Price, Underlying(s) (called Instrument ID for Cash Equities and Cash Bonds) and Time Horizon. The card is titled IDEA, or INVESTMENT RECOMMENDATION when any leg is one. **Save** switches to a read-only view card (`NEW INVESTMENT RECOMMENDATION`, trading area, legs with side chips); **Edit** goes back. No validation. The mail body is not touched.
 - **Draft linked to a backend record.** New mail creates a draft on the endpoint (`POST /drafts`) and stores its id in the message as the `x-idea-id` header. The key elements, recipients and subject are mirrored to it while editing (`PUT /drafts/:id`).

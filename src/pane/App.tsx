@@ -5,7 +5,7 @@ import { getSaved, inOutlook, setSession } from "./office";
 
 type Mode = "edit" | "view";
 
-const STEPS = ["Key elements", "Select recipients", "Check and publish"];
+const STEPS = ["Key elements", "Select recipients"];
 
 export function App() {
   const outlook = inOutlook();
